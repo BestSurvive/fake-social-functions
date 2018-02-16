@@ -1,0 +1,16 @@
+{
+  "name": "fakesocial-js-function",
+  "version": "1.0.4",
+  "description": "This is a module for ITS Steve Jobs ",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "fakesocial",
+    "js",
+    "function"
+  ],
+  "author": "Luca Cortile <cortilel@gmail.com>",
+  "license": "MIT"
+}
