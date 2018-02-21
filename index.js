@@ -1,5 +1,4 @@
 var cont = 1;
-var tokens=[1,2,3,4,5,6,7,8,9,10]
 var social = [
     {
         token: cont++,
@@ -28,6 +27,24 @@ var social = [
             }
         ]
 
+    },
+    {
+        token: cont++,
+        name: 'ciao',
+        friends: [],
+        reqE: [],
+        reqR: [],
+        post: [
+            {
+                idPost: 1,
+                mes: "hello"
+            },
+            {
+                idPost: 2,
+                mes: "hello"
+            }
+        ]
+
     }
 
 ]
@@ -45,15 +62,19 @@ exports.signUp=function(user){
 exports.addPost=function(token,newPost){
    
     for (var i = 0; i < social.length; i++) {
+        
         if (token===social[i].token) {
-             newPost.idPost++;
-             social[i].post.push({newPost})
+             newPost.idPost= parseInt(social[i].post[social[i].post.length-1].idPost+1)
+             social[i].post.push(newPost)
+             return "Post Added";
         }
         
     }
     
-    return "post";
+    
 }
+
+
 
 
 
@@ -64,19 +85,21 @@ exports.reqFr = function (idE, idR) {
         {
             social[i].reqE.push(idR)
         }
-    }     
-    for (var i = 0; i < social.length; i++) {
+    //}
+    //for (var i = 0; i < social.length; i++) {
         if(social[i].token===idR)
         {
             social[i].reqR.push(idE)
         }
     }
 
-    return social  
+    return "Request Send"  
    
     
 }
-//reqFr(1,2);
+//this.reqFr(1,2);
+//this.reqFr(3,2);
+//console.log(social);
 
 
 
@@ -112,7 +135,8 @@ exports.conferme = function (id,idFriend) {
    
     
 }
-//console.log(conferme(2,1));
+//this.conferme(2,3);
+//this.conferme(2,1);
 //console.log(social);
 
 
@@ -120,20 +144,105 @@ exports.allUser=function() {
     return social;   
 }
 
-exports.allToken=function () { 
-    cond=true;
+exports.delPost=function(id,idPost){
     for (var i = 0; i < social.length; i++) {
-        if(tokens.includes(social[i].token) && cond===true)
+        if(social[i].token===id)
         {
-          cond=true;
-        }else cond=false;
+            for (var y = 0; y < social[i].post.length; y++) {
+                if (social[i].post[y].idPost===idPost) {
+                    social[i].post.splice(y,1) 
+                    return "Deleted"   
+                }
+                
+            }
+        }
     }
 
-    if(cond===true){
-        return "ValidToken"
+}
+exports.delFriend=function(id,idFriend){
+    for (var i = 0; i < social.length; i++) {
+        if(social[i].token===id)
+        {
+            for (var y = 0; y < social[i].friends.length; y++) {
+                if (social[i].friends[y]===idFriend) {
+                    social[i].friends.splice(y,1) 
+                }
+                
+            }
+        }
     }
-    return "Invalid Token"
-    
-     
+    for (var i = 0; i < social.length; i++) {
+        if(social[i].token===idFriend)
+        {
+            for (var y = 0; y < social[i].friends.length; y++) {
+                if (social[i].friends[y]===id) {
+                    social[i].friends.splice(y,1)  
+                }
+                
+            }
+        }
+    }
+    return "Friend Deleted"  
+
+}
+//this.delFriend(2,1);
+//console.log(social);
+
+
+exports.delReq=function(id,idreqE){
+    for (var i = 0; i < social.length; i++) {
+        if(social[i].token===id)
+        {
+            for (var y = 0; y < social[i].reqE.length; y++) {
+                if (social[i].reqE[y]===idreqE) {
+                    social[i].reqE.splice(y,1) 
+                }
+                
+            }
+        }
+    }
+    for (var i = 0; i < social.length; i++) {
+        if(social[i].token===idreqE)
+        {
+            for (var y = 0; y < social[i].reqR.length; y++) {
+                if (social[i].reqR[y]===id) {
+                    social[i].reqR.splice(y,1)  
+                }
+                
+            }
+        }
+    }
+    return "Request Deleted"  
+
 }
 
+//this.delreq(1,2);
+//console.log(social);
+
+
+exports.viewPost=function(id,idFriend) {
+    for(var i=0; i<social.length;i++)
+    {
+        if(social[i].token===idFriend)
+        {
+            for(var y=0; y<social[i].friends.length;y++)
+            {
+                if(social[i].friends[y]===id)
+                {
+                    return social[i].post
+                }  
+            }    
+        }
+    }
+}
+//console.log(viewPost(3,2));
+
+exports.allToken=function () {
+    var tokens=[];
+    for (var i = 0; i < social.length; i++) {
+        tokens.push(social[i].token)
+    }
+    return tokens;
+    
+}
+//console.log(this.allToken());
